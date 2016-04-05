@@ -2,10 +2,10 @@ function love.conf(t)
 	t.identity = nil -- Set this to have a proper save/data folder
 	t.version = "0.9.0"
 
-	t.window.title = "GAME TITLE"
+	t.window.title = "ShmupWare"
 
-	t.window.width = 640
-	t.window.height = 480
+	t.window.width = 64
+	t.window.height = 64
 	t.window.resizable = false
 	t.window.fullscreen = false
 	t.window.vsync = true
