@@ -6,10 +6,15 @@ love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
 globals = {
 	font = {
-		standard = love.graphics.newFont("assets/font/imagine_font.otf",8)
-	}
+		standard = love.graphics.newFont("assets/font/imagine_font.otf",8),
+		small = love.graphics.newFont("assets/font/imagine_font.otf",6)
+	},
+	spritesheet = love.graphics.newImage("assets/sprite/spritesheet.png"),
+	
+	keydown = {}
 }
 
+require("actor")
 require("screen")
 
 screen_menu = require("screens/menu")
@@ -20,6 +25,18 @@ screen_prompt = require("screens/prompt")
 function love.load()
 	love.graphics.setFont(globals.font.standard)
 	screen_stack:push(screen_menu)
+end
+
+function love.keypressed(key, scancode, isrepeat)
+	screen_stack[#screen_stack]:keypressed(key)
+
+	if not isrepeat then
+		globals.keydown[key] = true
+	end
+end
+
+function love.keyreleased(key, scancode)
+	globals.keydown[key] = false
 end
 
 function love.update(dt)

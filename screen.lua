@@ -37,13 +37,19 @@ function Screen:exit()
 	-- Called to finalize the screen
 end
 
+function Screen:keypressed(key)
+	-- Called to deal with keypresses
+end
+
 function Screen:update(dt)
 	-- Called to update content on the top screen
 end
 
 function Screen:draw()
 	-- Called to drawn on the screen canvas
-	love.graphics.clear(self.canvas)
+	love.graphics.setCanvas(self.canvas)
+	love.graphics.clear()
+	love.graphics.setCanvas()
 end
 
 -- Screen stack implementation
@@ -58,6 +64,7 @@ end
 function screen_stack:pop()
 	top_scr = table.remove(self)
 	top_scr:exit()
+	if #self <= 0 then love.event.quit() end
 	return top_scr
 end
 
@@ -69,7 +76,9 @@ end
 function screen_stack:draw()
 	-- Draw screens on top of each other
 	top_scr = self[#self]
+	love.graphics.setCanvas(top_scr.canvas)
 	top_scr:draw()
+	love.graphics.setCanvas()
 
 	love.graphics.push()
 	love.graphics.scale(Resolution.scale)
