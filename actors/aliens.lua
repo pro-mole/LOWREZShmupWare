@@ -6,25 +6,45 @@ Alien = {
 
 Alien.types = {
 	myrm = {
+		life = 1,
 		sprite = love.graphics.newQuad(8, 0, 8, 8, 256, 256),
 		update = function(self,dt)
 			self.timer = self.timer + dt
-			self.x = self.x + 16*dt * math.sin(self.timer * 2*math.pi)
+			self.x = self.root.x + 8*math.sin(self.timer * 2*math.pi)
 
-			self.y = self.y + 8*dt
+			self.y = self.root.y + 8*self.timer
+
+			if #self.shots < math.floor(self.timer + 0.5) then
+				table.insert(self.shots, {x = self.x+4, y = self.y + 8})
+			end
 		end
 	},
 	fore = {
-		sprite = love.graphics.newQuad(16, 0, 8, 8, 256, 256)
+		life = 1,
+		sprite = love.graphics.newQuad(16, 0, 8, 8, 256, 256),
+		update = function(self,dt)
+			self.timer = self.timer + dt
+
+			self.x = self.root.x + 8*math.sin(self.timer * 1*math.pi)
+			self.y = self.root.y + 6*math.sin(self.timer * 4*math.pi)
+		end
 	},
 	helm = {
+		life = 1,
 		sprite = love.graphics.newQuad(24, 0, 8, 8, 256, 256),
 		update = function(self,dt)
 			self.timer = self.timer + dt
-			
-			self.x = self.x + 16*dt * math.sin(self.timer * 2*math.pi)
 
-			self.y = self.y + 8*dt
+		end
+	}
+}
+
+Alien.bosses = {
+	moth = {
+		life = 10,
+		sprite = love.graphics.newQuad(32, 0, 32, 32, 256, 256),
+		update = function(self, dt)
+			self.timer = self.timer + dt
 		end
 	}
 }
@@ -43,11 +63,24 @@ function Alien.new(type, x, y)
 	actor.type = type
 	actor.sprite = Alien.types[type].sprite
 	actor.update = Alien.types[type].update
+	
+	actor.life = Alien.types[type].life
+	actor.shots = {}
 	actor.timer = 0
+
+	actor.root = {x = actor.x, y = actor.y}
 
 	setmetatable(actor, Alien)
 
 	return actor
+end
+
+function Alien:draw()
+	Actor.draw(self)
+
+	for i,shot in pairs(self.shots) do
+		if not shot.hit then love.graphics.rectangle("fill", shot.x, shot.y, 1, 1) end
+	end
 end
 
 function Alien:__index(index)

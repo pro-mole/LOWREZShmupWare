@@ -7,6 +7,7 @@ function Player.new(x, y)
 	A = Actor.new(x, y, love.graphics.newQuad(0, 0, 8, 8, 256, 256))
 	A:addBounds()
 	A.shots = {}
+	A.alive = true
 
 	P = setmetatable(A, Player)
 
@@ -24,26 +25,18 @@ function Player:__index(index)
 end
 
 function Player:update(dt)
-	if globals.keydown.right and self.x < 64-9 then
-		self.x = self.x + dt * 16
-	end
+	if self.alive then
+		if globals.keydown.right and self.x < 64-9 then
+			self.x = self.x + dt * 16
+		end
 
-	if globals.keydown.left and self.x > 1 then
-		self.x = self.x - dt * 16
+		if globals.keydown.left and self.x > 1 then
+			self.x = self.x - dt * 16
+		end
 	end
 
 	for i,shot in pairs(self.shots) do
 		shot.y = shot.y - 64*dt
-	end
-
-	-- Shot collision check
-	for i,shot in ipairs(self.shots) do
-		for j,alien in ipairs(globals.aliens) do
-			if alien:checkCollision(shot.x, shot.y) then
-				alien.alive = false
-				shot.hit = true
-			end
-		end
 	end
 
 	for i = #self.shots,1,-1 do
@@ -52,7 +45,7 @@ function Player:update(dt)
 end
 
 function Player:keypressed(key)
-	if key == "space" then
+	if self.alive and key == "space" then
 		table.insert(self.shots, {x = self.x+4, y = self.y-2})
 	end
 end
