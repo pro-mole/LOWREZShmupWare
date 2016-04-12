@@ -56,4 +56,6 @@ function Player:draw()
 	for i,shot in pairs(self.shots) do
 		love.graphics.rectangle("fill", shot.x, shot.y, 1, 1)
 	end
+
+	love.graphics.print(string.format("(%d,%d)", globals.player.x, globals.player.y), 0, 0)
 end

@@ -6,6 +6,7 @@ function _game:init()
 	globals.level = 1
 	globals.mission = {}
 	globals.actors = {}
+	globals.shots = {}
 
 	screen_stack:push(screen_prompt)
 end
@@ -43,15 +44,19 @@ function _game:update(dt)
 
 	for i,alien in ipairs(globals.aliens) do
 		if alien.update ~= nil then alien:update(dt) end
-		if alien.shots ~= nil then
-			for i,shot in ipairs(alien.shots) do
-				if not shot.hit then
-					shot.y = shot.y + 32*dt
-					if globals.player:checkCollision(shot.x, shot.y) then
-						globals.player.alive = false
-						shot.hit = true
-					end
-				end
+	end
+
+	for i,shot in ipairs(globals.shots) do
+		if not shot.hit then
+			if shot.angle ~= nil then
+				shot.x = shot.x + 32*dt*math.cos(shot.angle)
+				shot.y = shot.y + 32*dt*math.sin(shot.angle)
+			else
+				shot.y = shot.y + 32*dt
+			end
+			if globals.player:checkCollision(shot.x, shot.y) then
+				globals.player.alive = false
+				shot.hit = true
 			end
 		end
 	end
@@ -87,11 +92,23 @@ function _game:draw()
 		alien:draw()
 	end
 
+	for i,shot in pairs(globals.shots) do
+		if not shot.hit then love.graphics.rectangle("fill", shot.x, shot.y, 1, 1) end
+	end
+
 	if globals.mission.win == 0 then
-		love.graphics.setColor(128,0,0,255)
+		love.graphics.setColor(64,64,64,255)
 		love.graphics.rectangle("fill", 1, 64-3, 62, 2)
+		time_ratio = globals.timer/globals.mission.time
+		if time_ratio > 0.5 then
+			love.graphics.setColor(255,255,255,255)
+		elseif time_ratio > 0.25 then
+			love.graphics.setColor(255,192,0,255)
+		else
+			love.graphics.setColor(255,0,0,255)
+		end
+		love.graphics.rectangle("fill", 1, 64-3, 62 * time_ratio, 2)
 		love.graphics.setColor(255,255,255,255)
-		love.graphics.rectangle("fill", 1, 64-3, 62 * (globals.timer/globals.mission.time), 2)
 	elseif globals.mission.win > 0 then
 		love.graphics.setColor(64,255,64,255)
 		love.graphics.rectangle("fill", 1, 64-3, 62, 2)
