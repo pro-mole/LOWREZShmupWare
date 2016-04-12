@@ -2,11 +2,11 @@
 
 _prompt = Screen.new()
 
-prompt_timer = 3
+prompt_timer = 2
 
 function _prompt:init()
 	globals.mission = getRandomMission(globals.level)
-	globals.mission.won = false
+	globals.mission.win = 0
 
 	self.timer = prompt_timer
 end
@@ -29,8 +29,13 @@ function _prompt:draw()
 	end
 	love.graphics.printf(globals.mission.prompt, 8, 16, 48, "center")
 
-	love.graphics.setColor(255,255,0,255)
-	love.graphics.printf(math.ceil(self.timer), 8, 48, 48, "center")
+	if self.timer > 1 then
+		love.graphics.setColor(255,255,0,255)
+		love.graphics.printf("READY...", 8, 48, 48, "center")
+	else
+		love.graphics.setColor(0,255,0,255)
+		love.graphics.printf("GO!", 8, 48, 48, "center")
+	end
 
 	love.graphics.setColor(255,255,255,255)
 end
@@ -38,7 +43,7 @@ end
 function _prompt:exit()
 	screen_stack[#screen_stack]:reset()
 
-	globals.mission.init(globals.level)
+	globals.mission:init(globals.level)
 end
 
 -- Mission prompts
@@ -47,21 +52,81 @@ Missions = {
 	{
 		prompt = "KILL EM ALL!",
 		time = 5,
-		init = function(level)
+		init = function(self,level)
+			alienType = Alien.getRandomType()
+			alienNumber = math.min(1 + math.random(level/2), 4)
+			alienWidth = 64/alienNumber
 			globals.aliens = {}
-			for i = 1,3,1 do
-				A = Alien.new(Alien.getRandomType(), 8 + (i-1)*16, 8)
+			self.aliens = {}
+			for i = 1,alienNumber,1 do
+				A = Alien.new(alienType, alienWidth/2 + (i-1)*alienWidth, 4)
 				table.insert(globals.aliens, A)
+				table.insert(self.aliens, A)
 			end
 		end,
-		victory = function()
-			return #globals.aliens == 0
+		victory = function(self)
+			all_dead = true
+			for i,a in ipairs(self.aliens) do
+				if a.alive then all_dead = false end
+			end
+			return all_dead
+		end,
+		loss = function(self)
+			return not globals.player.alive
+		end
+	},
+	{
+		prompt = "KILL EM ALL!",
+		time = 5,
+		init = function(self,level)
+			alienNumber = math.min(1 + math.random(level/2), 4)
+			alienWidth = 64/alienNumber
+			globals.aliens = {}
+			self.aliens = {}
+			for i = 1,alienNumber,1 do
+				A = Alien.new(Alien.getRandomType(), alienWidth/2 + (i-1)*alienWidth, 4)
+				table.insert(globals.aliens, A)
+				table.insert(self.aliens, A)
+			end
+		end,
+		victory = function(self)
+			all_dead = true
+			for i,a in ipairs(self.aliens) do
+				if a.alive then all_dead = false end
+			end
+			return all_dead
+		end,
+		loss = function(self)
+			return not globals.player.alive
+		end
+	},
+	{
+		prompt = "STAY ALIVE!",
+		time = 5,
+		init = function(self,level)
+			alienNumber = math.min(1 + math.random(level/2), 4) * 2
+			alienWidth = 64/alienNumber
+			globals.aliens = {}
+			self.aliens = {}
+			for j = 1,2,1 do
+				for i = 1,alienNumber,1 do
+					A = Alien.new(Alien.getRandomType(), alienWidth/2 + (i-1)*alienWidth, 4 + (j-1)*8)
+					table.insert(globals.aliens, A)
+					table.insert(self.aliens, A)
+				end
+			end
+		end,
+		victory = function(self)
+			return globals.timer <= 1 and globals.player.alive
+		end,
+		loss = function(self)
+			return not globals.player.alive
 		end
 	}
 }
 
 function getRandomMission(level)
-	return Missions[math.random(#Missions)]
+	return Missions[math.min(math.random(#Missions), math.ceil(globals.level/5))]
 end
 
 return _prompt

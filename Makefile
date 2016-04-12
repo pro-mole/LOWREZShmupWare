@@ -1,13 +1,13 @@
 #A simple Makefile to create our package
 
-EXECNAME=EXECNAME
-VERSION=0.1
+EXECNAME=FLASHMUP
+VERSION=0.1c
 PACKNAME=$(EXECNAME)-$(VERSION).love
 
 all: $(PACKNAME)
 
-$(PACKNAME): *.lua assets
-	zip -9 -q -r $(PACKNAME) *.lua assets
+$(PACKNAME): *.lua */*.lua assets
+	zip -9 -q -r $(PACKNAME) *.lua */*.lua assets
 	
 run: *.lua assets
 	love ./
