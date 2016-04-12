@@ -51,15 +51,16 @@ end
 Missions = {
 	{
 		prompt = "KILL EM ALL!",
-		time = 5,
+		time = 6,
 		init = function(self,level)
-			alienType = Alien.getRandomType()
+			alienType = Alien.getRandomType(level)
 			alienNumber = math.min(1 + math.random(level/2), 4)
 			alienWidth = 64/alienNumber
 			globals.aliens = {}
 			self.aliens = {}
+			print(self.prompt, alienType, alienNumber)
 			for i = 1,alienNumber,1 do
-				A = Alien.new(alienType, alienWidth/2 + (i-1)*alienWidth, 4)
+				A = Alien.new(alienType, alienWidth/2-4 + (i-1)*alienWidth, 4)
 				table.insert(globals.aliens, A)
 				table.insert(self.aliens, A)
 			end
@@ -77,14 +78,14 @@ Missions = {
 	},
 	{
 		prompt = "KILL EM ALL!",
-		time = 5,
+		time = 6,
 		init = function(self,level)
 			alienNumber = math.min(1 + math.random(level/2), 4)
 			alienWidth = 64/alienNumber
 			globals.aliens = {}
 			self.aliens = {}
 			for i = 1,alienNumber,1 do
-				A = Alien.new(Alien.getRandomType(), alienWidth/2 + (i-1)*alienWidth, 4)
+				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
 				table.insert(globals.aliens, A)
 				table.insert(self.aliens, A)
 			end
@@ -102,7 +103,7 @@ Missions = {
 	},
 	{
 		prompt = "STAY ALIVE!",
-		time = 5,
+		time = 6,
 		init = function(self,level)
 			alienNumber = math.min(1 + math.random(level/2), 4) * 2
 			alienWidth = 64/alienNumber
@@ -110,7 +111,7 @@ Missions = {
 			self.aliens = {}
 			for j = 1,2,1 do
 				for i = 1,alienNumber,1 do
-					A = Alien.new(Alien.getRandomType(), alienWidth/2 + (i-1)*alienWidth, 4 + (j-1)*8)
+					A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4 + (j-1)*8)
 					table.insert(globals.aliens, A)
 					table.insert(self.aliens, A)
 				end

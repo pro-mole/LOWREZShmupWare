@@ -36,7 +36,7 @@ function Player:update(dt)
 	end
 
 	for i,shot in pairs(self.shots) do
-		shot.y = shot.y - 64*dt
+		shot.y = shot.y - 128*dt
 	end
 
 	for i = #self.shots,1,-1 do

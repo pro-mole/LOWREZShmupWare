@@ -5,36 +5,39 @@ Alien = {
 }
 
 Alien.types = {
-	myrm = {
+	{
+		name = "MYRM",
 		life = 1,
 		sprite = love.graphics.newQuad(8, 0, 8, 8, 256, 256),
 		update = function(self,dt)
 			self.timer = self.timer + dt
-			self.x = self.root.x + 8*math.sin(self.timer * 2*math.pi)
+			self.x = self.root.x + 8*math.sin(self.timer * math.pi)
 
-			self.y = self.root.y + 8*self.timer
+			self.y = self.root.y + 4*self.timer
 
 			if #self.shots < math.floor(self.timer + 0.5) then
 				table.insert(self.shots, {x = self.x+4, y = self.y + 8})
 			end
 		end
 	},
-	fore = {
-		life = 1,
-		sprite = love.graphics.newQuad(16, 0, 8, 8, 256, 256),
-		update = function(self,dt)
-			self.timer = self.timer + dt
-
-			self.x = self.root.x + 8*math.sin(self.timer * 1*math.pi)
-			self.y = self.root.y + 6*math.sin(self.timer * 4*math.pi)
-		end
-	},
-	helm = {
+	{
+		name = "HELM",
 		life = 1,
 		sprite = love.graphics.newQuad(24, 0, 8, 8, 256, 256),
 		update = function(self,dt)
 			self.timer = self.timer + dt
 
+		end
+	},
+	{
+		name = "FORE",
+		life = 1,
+		sprite = love.graphics.newQuad(16, 0, 8, 8, 256, 256),
+		update = function(self,dt)
+			self.timer = self.timer + dt
+
+			self.x = self.root.x + 8*math.sin(self.timer * math.pi)
+			self.y = self.root.y + 6*math.sin(self.timer * 2*math.pi)
 		end
 	}
 }
@@ -51,11 +54,12 @@ Alien.bosses = {
 
 Alien.typeset = {}
 for k,v in pairs(Alien.types) do
+	print(k)
 	table.insert(Alien.typeset, k)
 end
 
-function Alien.getRandomType()
-	return Alien.typeset[math.random(#Alien.typeset)]
+function Alien.getRandomType(level)
+	return Alien.typeset[math.min(math.ceil(level/4), math.random(#Alien.typeset))]
 end
 
 function Alien.new(type, x, y)
