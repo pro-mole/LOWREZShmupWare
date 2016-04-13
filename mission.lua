@@ -9,17 +9,16 @@ Missions = {
 			alienNumber = math.min(1 + math.random(level/2), 4)
 			alienWidth = 64/alienNumber
 			globals.aliens = {}
-			self.aliens = {}
+			self.targets = {}
 			print(self.prompt, alienType, alienNumber)
 			for i = 1,alienNumber,1 do
 				A = Alien.new(alienType, alienWidth/2-4 + (i-1)*alienWidth, 4)
-				table.insert(globals.aliens, A)
-				table.insert(self.aliens, A)
+				table.insert(self.targets, A)
 			end
 		end,
 		victory = function(self)
 			all_dead = true
-			for i,a in ipairs(self.aliens) do
+			for i,a in ipairs(self.targets) do
 				if a.alive then all_dead = false end
 			end
 			return all_dead
@@ -35,16 +34,15 @@ Missions = {
 			alienNumber = math.min(1 + math.random(level/2), 4)
 			alienWidth = 64/alienNumber
 			globals.aliens = {}
-			self.aliens = {}
+			self.targets = {}
 			for i = 1,alienNumber,1 do
 				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
-				table.insert(globals.aliens, A)
-				table.insert(self.aliens, A)
+				table.insert(self.targets, A)
 			end
 		end,
 		victory = function(self)
 			all_dead = true
-			for i,a in ipairs(self.aliens) do
+			for i,a in ipairs(self.targets) do
 				if a.alive then all_dead = false end
 			end
 			return all_dead
@@ -60,12 +58,10 @@ Missions = {
 			alienNumber = math.min(1 + math.random(level/2), 4) * 2
 			alienWidth = 64/alienNumber
 			globals.aliens = {}
-			self.aliens = {}
+			self.targets = {}
 			for j = 1,2,1 do
 				for i = 1,alienNumber,1 do
 					A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4 + (j-1)*8)
-					table.insert(globals.aliens, A)
-					table.insert(self.aliens, A)
 				end
 			end
 		end,

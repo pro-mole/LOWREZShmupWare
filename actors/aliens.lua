@@ -85,6 +85,7 @@ function Alien.new(type, x, y)
 
 	actor.root = {x = actor.x, y = actor.y}
 
+	table.insert(globals.aliens, actor)
 	setmetatable(actor, Alien)
 
 	return actor
