@@ -16,6 +16,7 @@ globals = {
 
 require("actor")
 require("screen")
+require("mission")
 
 screen_menu = require("screens/menu")
 screen_game = require("screens/gameplay")
