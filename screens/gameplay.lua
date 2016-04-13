@@ -48,9 +48,10 @@ function _game:update(dt)
 
 	for i,shot in ipairs(globals.shots) do
 		if not shot.hit then
-			if shot.angle ~= nil then
-				shot.x = shot.x + 32*dt*math.cos(shot.angle)
-				shot.y = shot.y + 32*dt*math.sin(shot.angle)
+			if shot.target ~= nil then
+				angle = math.atan2(shot.target.y - shot.y, shot.target.x - shot.x)
+				shot.x = shot.x + 32*dt*math.cos(angle)
+				shot.y = shot.y + 32*dt*math.sin(angle)
 			else
 				shot.y = shot.y + 32*dt
 			end

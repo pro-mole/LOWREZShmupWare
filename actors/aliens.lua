@@ -32,9 +32,7 @@ Alien.types = {
 
 			if self.shots < math.floor(self.timer + 0.5) then
 				table.insert(globals.shots, {x = self.x + 4, y = self.y + 8,
-					angle = math.atan2(globals.player.y - self.y, globals.player.x - self.x) })
-				print(string.format("(%d,%d) -> (%d,%d)", self.x, self.y, globals.player.x, globals.player.y))
-				print(math.atan2(globals.player.y - self.y, globals.player.x - self.x))
+					target = { x = globals.player.x, y = globals.player.y })
 				self.shots = self.shots + 1
 			end
 		end
