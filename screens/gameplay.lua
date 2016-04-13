@@ -5,17 +5,14 @@ local _game = Screen.new()
 function _game:init()
 	globals.level = 1
 	globals.mission = {}
-	globals.actors = {}
-	globals.shots = {}
 
 	screen_stack:push(screen_prompt)
 end
 
 function _game:reset()
-	self.actors = {}
-
 	globals.timer = globals.mission.time
 	globals.player = Player.new(24, 48)
+	globals.shots = {}
 end
 
 function _game:update(dt)
@@ -49,6 +46,7 @@ function _game:update(dt)
 	for i,shot in ipairs(globals.shots) do
 		if not shot.hit then
 			if shot.target ~= nil then
+				if math.pow(shot.x - shot.target.x, 2) + math.pow(shot.y - shot.target.y, 2) < 1 then shot.hit = true end
 				angle = math.atan2(shot.target.y - shot.y, shot.target.x - shot.x)
 				shot.x = shot.x + 32*dt*math.cos(angle)
 				shot.y = shot.y + 32*dt*math.sin(angle)

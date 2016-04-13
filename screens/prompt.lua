@@ -45,3 +45,5 @@ function _prompt:exit()
 
 	globals.mission:init(globals.level)
 end
+
+return _prompt
