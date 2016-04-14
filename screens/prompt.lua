@@ -21,7 +21,7 @@ end
 
 function _prompt:draw()
 	love.graphics.clear(0,0,0,255)
-	love.graphics.draw(globals.spritesheet, self.bg_sprite, 0, 0)
+	love.graphics.draw(globals.spritesheet[globals.sprite_mode], self.bg_sprite, 0, 0)
 	
 	love.graphics.printf(string.format("LEVEL %d", globals.level), 8, 4, 48, "center")
 

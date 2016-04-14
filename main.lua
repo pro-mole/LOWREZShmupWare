@@ -12,8 +12,11 @@ globals = {
 		title = love.audio.newSource("assets/bgm/Murky.wav", "stream"),
 		gameplay =  love.audio.newSource("assets/bgm/On Fire.wav", "stream")
 	},
-	spritesheet = love.graphics.newImage("assets/sprite/spritesheet.png"),
-	
+	sprite_mode = 'lo',
+	spritesheet = {
+		lo = love.graphics.newImage("assets/sprite/spritesheet.png"),
+		hi = love.graphics.newImage("assets/sprite/spritesheet_hi.png")
+	},
 	keydown = {}
 }
 

@@ -90,7 +90,7 @@ end
 function _game:draw()
 	love.graphics.clear(0, 0, 0, 255)
 
-	love.graphics.draw(globals.spritesheet, self.bg_sprite, 0, 0)
+	love.graphics.draw(globals.spritesheet[globals.sprite_mode], self.bg_sprite, 0, 0)
 
 	globals.player:draw()
 	for i,alien in ipairs(globals.aliens) do

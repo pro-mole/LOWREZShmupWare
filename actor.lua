@@ -26,7 +26,7 @@ end
 
 function Actor:draw()
 	if self.sprite then
-		love.graphics.draw(globals.spritesheet, self.sprite, self.x, self.y)
+		love.graphics.draw(globals.spritesheet[globals.sprite_mode], self.sprite, self.x, self.y)
 	end
 end
 
