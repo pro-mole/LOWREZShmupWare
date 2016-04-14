@@ -143,12 +143,20 @@ function Alien.new(type, x, y)
 end
 
 function Alien:draw()
-	love.graphics.setColor(self.color)
-	if (self.bounty) then love.graphics.setColor(self.bounty_color) end
-	if (self.ally) then love.graphics.setColor(self.ally_color) end
+	if (globals.mode == 'hi') then
+		if (self.bounty and self.type.bounty_sprite) then self.sprite = self.type.bounty_sprite end
+		if (self.ally and self.type.ally_sprite) then self.sprite = self.type.ally_sprite end
 
-	Actor.draw(self)
-	love.graphics.setColor(255,255,255,255)
+		Actor.draw(self)
+	else
+		love.graphics.setColor(self.color)
+
+		if (self.bounty) then love.graphics.setColor(self.bounty_color) end
+		if (self.ally) then love.graphics.setColor(self.ally_color) end
+
+		Actor.draw(self)
+		love.graphics.setColor(255,255,255,255)
+	end
 end
 
 function Alien:__index(index)

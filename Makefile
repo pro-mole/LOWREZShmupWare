@@ -1,7 +1,7 @@
 #A simple Makefile to create our package
 
 EXECNAME=FLASHMUP
-VERSION=0.1d
+VERSION=0.2
 PACKNAME=$(EXECNAME)-$(VERSION).love
 
 all: $(PACKNAME)

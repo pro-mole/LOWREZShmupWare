@@ -14,6 +14,13 @@ _menu.options = {
 		end
 		love.window.setMode(64*Resolution.scale , 64*Resolution.scale)
 	end	},
+	{text = "MODE", action = function()
+		if globals.sprite_mode == 'lo' then
+			globals.sprite_mode = 'hi'
+		else
+			globals.sprite_mode = 'lo'
+		end
+	end	},
 	{text = "QUIT", action = function()
 		screen_stack:pop()
 	end }
@@ -38,10 +45,10 @@ function _menu:keypressed(key)
 	elseif key == "escape" then
 		screen_stack:pop()
 	elseif key == "down" then
-		self.pointer = (self.pointer)%3 + 1
+		self.pointer = (self.pointer)%(#self.options) + 1
 	elseif key == "up" then
 		self.pointer = self.pointer - 1
-		if self.pointer <= 0 then self.pointer = 3 end
+		if self.pointer <= 0 then self.pointer = #self.options end
 	end	
 end
 
