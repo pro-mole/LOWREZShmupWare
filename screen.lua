@@ -61,10 +61,13 @@ function screen_stack:push(scr)
 	scr:init()
 end
 
-function screen_stack:pop()
+function screen_stack:pop(reset)
 	top_scr = table.remove(self)
 	top_scr:exit()
-	if #self <= 0 then love.event.quit() end
+	if #self <= 0 then love.event.quit()
+	else
+		if reset then self[#self]:init() end
+	end
 	return top_scr
 end
 

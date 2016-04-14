@@ -19,7 +19,7 @@ Alien.types = {
 			self.timer = self.timer + dt
 			self.x = self.root.x + 8*math.sin((self.timer + self.phase) * math.pi)
 
-			self.y = self.root.y + 4*self.timer
+			self.y = self.root.y + 2*self.timer
 
 			if self.shots < math.floor(self.timer - 0.5) then
 				table.insert(globals.shots, {x = self.x+4, y = self.y + 8})

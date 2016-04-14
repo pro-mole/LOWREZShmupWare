@@ -8,6 +8,10 @@ globals = {
 	font = {
 		standard = love.graphics.newFont("assets/font/BYond.ttf",8)
 	},
+	bgm = {
+		title = love.audio.newSource("assets/bgm/Murky.wav", "stream"),
+		gameplay =  love.audio.newSource("assets/bgm/On Fire.wav", "stream")
+	},
 	spritesheet = love.graphics.newImage("assets/sprite/spritesheet.png"),
 	
 	keydown = {}

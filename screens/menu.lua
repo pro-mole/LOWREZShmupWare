@@ -23,6 +23,9 @@ function _menu:init()
 	self.pointer = 1
 
 	self.color_blink = 0
+
+	love.audio.stop()
+	globals.bgm.title:play()
 end
 
 function _menu:update(dt)

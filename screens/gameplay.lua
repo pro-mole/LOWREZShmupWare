@@ -7,6 +7,9 @@ function _game:init()
 	globals.level = 1
 	globals.mission = {}
 
+	love.audio.stop()
+	globals.bgm.gameplay:play()
+
 	screen_stack:push(screen_prompt)
 end
 
@@ -68,7 +71,7 @@ function _game:update(dt)
 	globals.timer = globals.timer - dt
 	if globals.timer <= 0 then
 		if globals.mission.win <= 0 then
-			screen_stack:pop()
+			screen_stack:pop(true)
 		else
 			globals.level = globals.level + 1
 			screen_stack:push(screen_prompt)
