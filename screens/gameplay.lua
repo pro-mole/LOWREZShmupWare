@@ -1,6 +1,7 @@
 -- Main game
 
 local _game = Screen.new()
+_game.bg_sprite = love.graphics.newQuad(0, 256-64, 64, 64, 256, 256)
 
 function _game:init()
 	globals.level = 1
@@ -85,6 +86,8 @@ end
 
 function _game:draw()
 	love.graphics.clear(0, 0, 0, 255)
+
+	love.graphics.draw(globals.spritesheet, self.bg_sprite, 0, 0)
 
 	globals.player:draw()
 	for i,alien in ipairs(globals.aliens) do

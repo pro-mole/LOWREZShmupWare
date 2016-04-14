@@ -1,6 +1,7 @@
 -- Mission prompt screen
 
 _prompt = Screen.new()
+_prompt.bg_sprite = love.graphics.newQuad(64, 256-64, 64, 64, 256, 256)
 
 prompt_timer = 2
 
@@ -20,6 +21,8 @@ end
 
 function _prompt:draw()
 	love.graphics.clear(0,0,0,255)
+	love.graphics.draw(globals.spritesheet, self.bg_sprite, 0, 0)
+	
 	love.graphics.printf(string.format("LEVEL %d", globals.level), 8, 4, 48, "center")
 
 	if self.timer * 5 % 2 == 0 then

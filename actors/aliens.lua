@@ -1,6 +1,10 @@
 -- Common enemies
 
 Alien = {
+	color = {255,255,255},
+	bounty_color = {255,0,0},
+	ally_color = {255,128,255},
+	shot_color = {255,255,0}
 }
 
 Alien.types = {
@@ -8,6 +12,9 @@ Alien.types = {
 		name = "MYRM",
 		life = 1,
 		sprite = love.graphics.newQuad(8, 0, 8, 8, 256, 256),
+		color = {64,192,255},
+		bounty_color = {255,64,192},
+		ally_color = {255,192,192},
 		update = function(self,dt)
 			self.timer = self.timer + dt
 			self.x = self.root.x + 8*math.sin((self.timer + self.phase) * math.pi)
@@ -33,6 +40,9 @@ Alien.types = {
 		name = "HELM",
 		life = 1,
 		sprite = love.graphics.newQuad(24, 0, 8, 8, 256, 256),
+		color = {192,128,64},
+		bounty_color = {32,128,32},
+		ally_color = {255,64,192},
 		update = function(self,dt)
 			self.timer = self.timer + dt
 
@@ -51,6 +61,9 @@ Alien.types = {
 		name = "FORE",
 		life = 1,
 		sprite = love.graphics.newQuad(16, 0, 8, 8, 256, 256),
+		color = {192,0,0},
+		bounty_color = {96,96,0},
+		ally_color = {64,64,255},
 		update = function(self,dt)
 			self.timer = self.timer + dt
 
@@ -116,6 +129,11 @@ function Alien.new(type, x, y)
 	actor.timer = 0
 	actor.phase = math.random()
 
+	actor.color = type.color or Alien.color
+	actor.bounty_color = type.bounty_color or Alien.bounty_color
+	actor.ally_color = type.ally_color or Alien.ally_color
+	actor.shot_color = type.shot_color or Alien.shot_color
+
 	actor.root = {x = actor.x, y = actor.y}
 
 	table.insert(globals.aliens, actor)
@@ -125,8 +143,9 @@ function Alien.new(type, x, y)
 end
 
 function Alien:draw()
-	if (self.bounty) then love.graphics.setColor(255,0,0,255) end
-	if (self.ally) then love.graphics.setColor(255,128,255,255) end
+	love.graphics.setColor(self.color)
+	if (self.bounty) then love.graphics.setColor(self.bounty_color) end
+	if (self.ally) then love.graphics.setColor(self.ally_color) end
 
 	Actor.draw(self)
 	love.graphics.setColor(255,255,255,255)

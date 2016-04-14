@@ -6,8 +6,7 @@ love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
 globals = {
 	font = {
-		standard = love.graphics.newFont("assets/font/imagine_font.otf",8),
-		small = love.graphics.newFont("assets/font/imagine_font.otf",6)
+		standard = love.graphics.newFont("assets/font/BYond.ttf",8)
 	},
 	spritesheet = love.graphics.newImage("assets/sprite/spritesheet.png"),
 	
