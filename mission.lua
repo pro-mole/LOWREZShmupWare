@@ -259,5 +259,5 @@ BossMission = {
 function getRandomMission(level)
 	if level % 10 == 0 then return BossMission end
 
-	return Missions[math.min(math.random(#Missions), globals.level/5)]
+	return Missions[math.min(math.random(#Missions), math.ceil(globals.level/5))]
 end

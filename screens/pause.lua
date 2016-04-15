@@ -2,7 +2,9 @@
 
 local _pause = Screen.new(48, 32)
 
-_pause.quit = false
+function _pause:init()
+	_pause.quit = false
+end
 
 function _pause:keypressed(key)
 	if key == "left"  or key == "right" then

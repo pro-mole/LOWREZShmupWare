@@ -31,6 +31,10 @@ screen_prompt = require("screens/prompt")
 
 function love.load()
 	love.graphics.setFont(globals.font.standard)
+
+	globals.bgm.title:setVolume(0.6)
+	globals.bgm.gameplay:setVolume(0.5)
+
 	screen_stack:push(screen_menu)
 end
 
