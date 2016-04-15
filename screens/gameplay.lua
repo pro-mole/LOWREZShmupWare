@@ -4,7 +4,7 @@ local _game = Screen.new()
 _game.bg_sprite = love.graphics.newQuad(0, 256-64, 64, 64, 256, 256)
 
 function _game:init()
-	globals.level =25
+	globals.level = 1
 	globals.mission = {}
 	globals.aliens = {}
 
