@@ -37,6 +37,10 @@ end
 function love.keypressed(key, scancode, isrepeat)
 	screen_stack[#screen_stack]:keypressed(key)
 
+	if key == 'p' then
+		love.graphics.newScreenshot():encode('png', 'sshot_' .. os.time() .. '.png')
+	end
+
 	if not isrepeat then
 		globals.keydown[key] = true
 	end

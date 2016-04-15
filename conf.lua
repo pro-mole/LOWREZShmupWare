@@ -1,5 +1,5 @@
 function love.conf(t)
-	t.identity = nil -- Set this to have a proper save/data folder
+	t.identity = "FLASHMUP" -- Set this to have a proper save/data folder
 	t.version = "0.10.0"
 
 	t.window.title = "ShmupWare"
