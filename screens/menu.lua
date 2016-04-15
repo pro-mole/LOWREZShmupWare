@@ -8,7 +8,7 @@ _menu.options = {
 	end },
 	{text = "SCALE", action = function()
 		if Resolution.scale < Resolution.max_scale then
-			Resolution.scale = Resolution.scale * 2
+			Resolution.scale = Resolution.scale + 1
 		else
 			Resolution.scale = 1
 		end

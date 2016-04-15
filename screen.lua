@@ -4,7 +4,7 @@ Resolution = {
 	x = 64,
 	y = 64,
 	scale = 8,
-	max_scale = 8
+	max_scale = 10
 }
 
 Screen = {
