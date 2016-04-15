@@ -8,7 +8,7 @@ Missions = {
 			alienType = Alien.getRandomType(level)
 			alienNumber = math.min(1 + math.random(level/5), 4)
 			alienWidth = 64/alienNumber
-			globals.aliens = {}
+
 			self.targets = {}
 			print(self.prompt, alienType, alienNumber)
 			for i = 1,alienNumber,1 do
@@ -33,7 +33,7 @@ Missions = {
 		init = function(self,level)
 			alienNumber = math.min(1 + math.random(level/5), 4)
 			alienWidth = 64/alienNumber
-			globals.aliens = {}
+
 			self.targets = {}
 			for i = 1,alienNumber,1 do
 				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
@@ -55,8 +55,8 @@ Missions = {
 		prompt = "STAY ALIVE!",
 		time = 6,
 		init = function(self,level)
-			alienNumber = {math.min(1 + math.random(level/3), 4), math.min(1 + math.random(level/5), 4)}
-			globals.aliens = {}
+			alienNumber = {math.min(1 + math.random(level/5), 4), math.min(1 + math.random(level/10), 4)}
+
 			self.targets = {}
 			for j = 1,2,1 do
 				alienWidth = 64/alienNumber[j]
@@ -77,9 +77,9 @@ Missions = {
 		time = 6,
 		init = function(self,level)
 			self.mark = nil
-			alienNumber = math.min(1 + math.random(level/3), 4) * 2
+			alienNumber = math.min(1 + math.random(level/5), 4)
 			alienWidth = 64/alienNumber
-			globals.aliens = {}
+
 			self.targets = {}
 			for i = 1,alienNumber,1 do
 				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
@@ -102,9 +102,9 @@ Missions = {
 		time = 6,
 		init = function(self,level)
 			self.ally = nil
-			alienNumber = math.min(1 + math.random(level/2), 3) * 2
+			alienNumber = math.min(1 + math.random(level/10), 4)
 			alienWidth = 64/alienNumber
-			globals.aliens = {}
+
 			self.targets = {}
 			for i = 1,alienNumber,1 do
 				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
@@ -113,6 +113,9 @@ Missions = {
 			A = Alien.new(Alien.getRandomType(level), 28, 12)
 			self.ally = A
 			self.ally.ally = true
+			if self.ally.type.update_ally ~= nil then
+				self.ally.update = self.ally.type.update_ally
+			end
 		end,
 		victory = function(self)
 			all_dead = true
@@ -130,9 +133,9 @@ Missions = {
 		time = 6,
 		init = function(self,level)
 			self.ally = nil
-			alienNumber = math.min(1 + math.random(level/2), 4) * 2
+			alienNumber = math.min(1 + math.random(level/10), 4)
 			alienWidth = 64/alienNumber
-			globals.aliens = {}
+
 			self.targets = {}
 			for i = 1,alienNumber,1 do
 				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
@@ -158,15 +161,61 @@ Missions = {
 		end
 	},
 	{
+		prompt = "KILL THE MARK!",
+		time = 6,
+		init = function(self,level)
+			self.mark = nil
+			
+			self.targets = {}
+			for i = 1,alienNumber,1 do
+				alienNumber = math.min(1 + math.random(level/10), 4)
+				alienWidth = 64/alienNumber
+				A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4)
+				if (not self.mark and math.random(0, alienNumber-i) == 0) then
+					self.mark = A
+					self.mark.life = 3
+					self.mark.bounty = true
+				end
+			end
+		end,
+		victory = function(self)
+			return not self.mark.alive
+		end,
+		loss = function(self)
+			return not globals.player.alive
+		end
+	},
+	{
+		prompt = "STAY ALIVE!",
+		time = 6,
+		init = function(self,level)
+			alienNumber = {math.min(1 + math.random(level/5), 4), math.min(1 + math.random(level/10), 4), math.min(1 + math.random(level/20), 4)}
+
+			self.targets = {}
+			for j = 1,3,1 do
+				alienWidth = 64/alienNumber[j]
+				for i = 1,alienNumber[j],1 do
+					A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4 + (j-1)*12)
+				end
+			end
+		end,
+		victory = function(self)
+			return globals.timer <= 0.5 and globals.player.alive
+		end,
+		loss = function(self)
+			return not globals.player.alive
+		end
+	},
+	{
 		prompt = "PACIFIST MODE!",
 		time = 6,
 		init = function(self,level)
 			self.ally = nil
-			alienNumber = math.min(1 + math.random(level/2), 4) * 2
-			alienWidth = 64/alienNumber
-			globals.aliens = {}
+
 			self.targets = {}
 			for j = 1,2,1 do
+				alienNumber = math.min(1 + math.random(level/20), 4)
+				alienWidth = 64/alienNumber
 				for i = 1,alienNumber,1 do
 					A = Alien.new(Alien.getRandomType(level), alienWidth/2-4 + (i-1)*alienWidth, 4 + (j-1)*12)
 					table.insert(self.targets, A)
@@ -210,5 +259,5 @@ BossMission = {
 function getRandomMission(level)
 	if level % 10 == 0 then return BossMission end
 
-	return Missions[math.min(math.random(#Missions), math.ceil(math.sqrt(globals.level)))]
+	return Missions[math.min(math.random(#Missions), globals.level/5)]
 end

@@ -4,8 +4,9 @@ local _game = Screen.new()
 _game.bg_sprite = love.graphics.newQuad(0, 256-64, 64, 64, 256, 256)
 
 function _game:init()
-	globals.level = 1
+	globals.level =25
 	globals.mission = {}
+	globals.aliens = {}
 
 	love.audio.stop()
 	globals.bgm.gameplay:play()
@@ -76,6 +77,8 @@ function _game:update(dt)
 			globals.level = globals.level + 1
 			screen_stack:push(screen_prompt)
 		end
+
+		globals.aliens = {}
 	end
 end
 
@@ -130,6 +133,7 @@ end
 function _game:exit()
 	globals.mission = nil
 	globals.player = nil
+	globals.aliens = nil
 end
 
 return _game

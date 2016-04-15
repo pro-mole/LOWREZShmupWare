@@ -18,6 +18,7 @@ function Actor.new(x, y, sprite)
 	A.x = x or 0
 	A.y = y or 0
 	A.sprite = sprite
+	A.bounds = {}
 
 	setmetatable(A, Actor)
 

@@ -54,7 +54,17 @@ Alien.types = {
 		end,
 		update_ally = function(self,dt)
 			self.timer = self.timer + dt
-			self.x = self.root.x + 8 * math.round(2*math.sin((self.timer + self.phase) * math.pi))
+
+			dir = math.floor(2*self.timer % 4)
+			if dir == 0 then
+				self.y = self.root.y + 12 * math.sin(self.timer * math.pi)
+			elseif dir == 1 then
+				self.x = self.root.x + 16 * (1-math.sin(self.timer * math.pi))
+			elseif dir == 2 then
+				self.y = self.root.y + 12 * (1+math.sin(self.timer * math.pi))
+			elseif dir == 3 then
+				self.x = self.root.x - 16 * (math.sin(self.timer * math.pi))
+			end
 		end
 	},
 	{
@@ -83,8 +93,8 @@ Alien.types = {
 		end,
 		update_ally = function(self,dt)
 			self.timer = self.timer + dt
-			self.x = self.root.x + 16*math.sin((self.timer + self.phase) * math.pi)
-			self.y = self.root.y + 8*math.sin((self.timer + self.phase) * math.pi)
+			self.x = self.root.x + 16*math.cos((self.timer + self.phase) * math.pi)
+			self.y = self.root.y + 12*math.sin((self.timer + self.phase) * math.pi)
 		end
 	}
 }
@@ -94,16 +104,17 @@ Alien.bosses = {
 		name = 'MOTH',
 		life = 10,
 		sprite = love.graphics.newQuad(32, 0, 32, 32, 256, 256),
+		bounds = {32,32},
 		update = function(self, dt)
 			self.timer = self.timer + dt
 
 			self.x = self.root.x + 16*math.sin((self.timer + self.phase) * math.pi/2)
-			self.y = self.root.y + 4*math.sin((self.timer + self.phase) * 3*math.pi)
+			self.y = self.root.y + 4*math.sin((self.timer + self.phase) * 3*math.pi/2)
 
-			if self.shots < math.floor(self.timer - 1) then
-				table.insert(globals.shots, {x = self.x - 12, y = self.y + 32})
-				table.insert(globals.shots, {x = self.x + 12, y = self.y + 32})
-				table.insert(globals.shots, {x = self.x, y = self.y + 32})
+			if self.shots < math.floor(self.timer/2) then
+				table.insert(globals.shots, {x = self.x + 4, y = self.y + 32})
+				table.insert(globals.shots, {x = self.x + 16, y = self.y + 32})
+				table.insert(globals.shots, {x = self.x + 28, y = self.y + 32})
 				self.shots = self.shots + 1
 			end
 		end
@@ -115,7 +126,8 @@ function Alien.getRandomType(level)
 end
 
 function Alien.getBoss(level)
-	return Alien.bosses[level/10 % #Alien.bosses]
+	print ("BOSS", level/10 % #Alien.bosses)
+	return Alien.bosses[level/10 % #Alien.bosses + 1]
 end
 
 function Alien.new(type, x, y)
@@ -138,6 +150,12 @@ function Alien.new(type, x, y)
 
 	table.insert(globals.aliens, actor)
 	setmetatable(actor, Alien)
+
+	if type.bounds ~= nil then
+		actor:addBounds(0,0,type.bounds[1],type.bounds[2])
+	else
+		actor:addBounds()
+	end
 
 	return actor
 end

@@ -8,6 +8,7 @@ function Player.new(x, y)
 	A:addBounds()
 	A.shots = {}
 	A.alive = true
+	A.cooldown = 0
 
 	P = setmetatable(A, Player)
 
@@ -42,11 +43,14 @@ function Player:update(dt)
 	for i = #self.shots,1,-1 do
 		if self.shots[i].y < 0 or self.shots[i].hit then table.remove(self.shots, i) end
 	end
+
+	self.cooldown = self.cooldown - dt
 end
 
 function Player:keypressed(key)
-	if self.alive and key == "space" then
+	if self.alive and key == "space" and self.cooldown <= 0 then
 		table.insert(self.shots, {x = self.x+4, y = self.y-2})
+		self.cooldown = 0.2
 	end
 end
 
