@@ -20,6 +20,7 @@ _menu.options = {
 		else
 			globals.sprite_mode = 'lo'
 		end
+		love.graphics.setFont(globals.font[globals.sprite_mode])
 	end	},
 	{text = "QUIT", action = function()
 		screen_stack:pop()

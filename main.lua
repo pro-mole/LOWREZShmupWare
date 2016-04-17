@@ -6,7 +6,8 @@ love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
 globals = {
 	font = {
-		standard = love.graphics.newFont("assets/font/BYond.ttf",8)
+		lo = love.graphics.newFont("assets/font/BYond.ttf",8),
+		hi = love.graphics.newFont("assets/font/imagine_font.otf",8)
 	},
 	bgm = {
 		title = love.audio.newSource("assets/bgm/Murky.wav", "stream"),
@@ -30,7 +31,7 @@ screen_pause = require("screens/pause")
 screen_prompt = require("screens/prompt")
 
 function love.load()
-	love.graphics.setFont(globals.font.standard)
+	love.graphics.setFont(globals.font.lo)
 
 	globals.bgm.title:setVolume(0.6)
 	globals.bgm.gameplay:setVolume(0.5)
